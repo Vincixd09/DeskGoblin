@@ -70,8 +70,9 @@ func exec(appName string) string {
 			fmt.Println(pterm.Red("No"))
 			return r + fmt.Sprintf(` "%v"`, appName)
 		}
+		fmt.Println("Tenga en cuenta que tambien tiene que agregar la ruta de su app en caso de que agregue otra, por ejemplo si agrega [/usr/local/bin/alacritty -e ] despues de eso tiene que agregar el path de su app y el argumento que vaya a usar, si no va a fallar")
 		execPerso, _ = pterm.DefaultInteractiveTextInput.WithDefaultText("Ingrese la orden").Show()
-		return execPerso + fmt.Sprintf(` "%v"`, appName)
+		return execPerso
 	}
 	fmt.Println(pterm.Red("No"))
 	return fmt.Sprintf(`"%v"`, appName)
