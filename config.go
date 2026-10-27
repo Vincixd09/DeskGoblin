@@ -1,7 +1,14 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/BurntSushi/toml"
+)
+
 //Example
 
 // go get github.com/BurntSushi/toml
-// package main
 
 // import (
 //     "fmt"
@@ -86,3 +93,20 @@
 
 // 	fmt.Println("Configuración creada:", configFile)
 // }
+
+type Config struct {
+	Paths struct {
+		desktopsdir string `toml:"desktopsdir"`
+	} `toml:"paths"`
+}
+
+func LoadConfig() {
+	var config Config
+
+	_, err := toml.DecodeFile("config.toml", &config)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Directorio de Java:", config.Paths.desktopsdir)
+}
