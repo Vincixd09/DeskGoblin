@@ -13,8 +13,8 @@ var (
 	options []string
 )
 
-func Remove() {
-	filepath.Walk("/home/kalisofi/.local/share/applications/", func(path string, info fs.FileInfo, err error) error {
+func Remove(config Config) {
+	filepath.Walk(config.Paths.Desktopsdir, func(path string, info fs.FileInfo, err error) error {
 
 		if !info.IsDir() {
 			options = append(options, path)
@@ -26,7 +26,7 @@ func Remove() {
 
 		return nil
 	})
-
+	options = append(options, "Back")
 	desktop(options)
 
 }
@@ -48,21 +48,22 @@ func desktop(options []string) {
 		pterm.Warning.Println("No seleccionaste ningun .desktop.")
 	}
 
-	result, _ := pterm.DefaultInteractiveConfirm.WithDefaultText("Seguro/a que quieres eliminar esto?").Show()
-	if result {
-		fmt.Println(pterm.Green("Yes"))
-		for i := range selectedOptions {
-			err := os.Remove(selectedOptions[i])
-			if err != nil {
-				pterm.Error.Print(err)
-				return
+	if selectedOptions[0] != "Back" {
+		result, _ := pterm.DefaultInteractiveConfirm.WithDefaultText("Seguro/a que quieres eliminar esto?").Show()
+		if result {
+			fmt.Println(pterm.Green("Yes"))
+			for i := range selectedOptions {
+				err := os.Remove(selectedOptions[i])
+				if err != nil {
+					pterm.Error.Print(err)
+					return
+				}
 			}
+
+			pterm.Println() // Espacio en blanco decorativo
+			pterm.Success.Println("¡.desktop borrado correctamente!")
+			return
 		}
-
-		pterm.Println() // Espacio en blanco decorativo
-		pterm.Success.Println("¡.desktop borrado correctamente!")
-		return
+		fmt.Println(pterm.Red("No"))
 	}
-	fmt.Println(pterm.Red("No"))
-
 }

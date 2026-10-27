@@ -10,7 +10,7 @@ import (
 	"github.com/sqweek/dialog"
 )
 
-func Create(file string) {
+func Create(file string, config Config) {
 	pterm.DefaultBox.WithRightPadding(10).WithLeftPadding(10).WithTopPadding(2).WithBottomPadding(2).Println("Holiwis :3")
 
 	name, _ := pterm.DefaultInteractiveTextInput.WithDefaultText("Ingrese un nombre").Show()
@@ -32,7 +32,7 @@ MimeType=%v
 %v`, name, comment, t, e, m, c, i)
 
 	fmt.Println(desktop)
-	err := os.Chdir("/home/kalisofi/.local/share/applications/")
+	err := os.Chdir(config.Paths.Desktopsdir)
 	if err != nil {
 		fmt.Println(err)
 	}
